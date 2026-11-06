@@ -59,14 +59,13 @@ public class MovimentacaoService {
     }
 
     private void preencher(Movimentacao m, MovimentacaoRequest req, Long uid) {
-        // só aceita categoria do próprio usuário
         Categoria c = categorias.findByIdAndUsuarioId(req.categoriaId(), uid)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria inválida"));
         m.setDescricao(req.descricao().trim());
         m.setValor(req.valor());
         m.setData(req.data());
         m.setCategoria(c);
-        m.setTipo(c.getTipo()); // receita/despesa vem da categoria
+        m.setTipo(c.getTipo());
     }
 
     private MovimentacaoResponse paraResposta(Movimentacao m) {
