@@ -15,8 +15,6 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filtro(HttpSecurity http) throws Exception {
         http
-            // CSRF desligado para simplificar este trabalho acadêmico. Em produção real o ideal é manter
-            // ligado (a sessão é por cookie), enviando o token CSRF nos formulários e nas chamadas fetch.
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login.html", "/css/**", "/js/**", "/error",
@@ -28,7 +26,6 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login.html?erro"))
             .logout(l -> l.logoutUrl("/logout").logoutSuccessUrl("/login.html"))
-            // chamadas /api sem login recebem 401 (e não um redirect para a página de login)
             .exceptionHandling(e -> e.defaultAuthenticationEntryPointFor(
                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
                 req -> req.getRequestURI().startsWith("/api/")));
