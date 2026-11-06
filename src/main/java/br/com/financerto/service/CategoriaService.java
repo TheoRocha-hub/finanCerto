@@ -52,7 +52,7 @@ public class CategoriaService {
         c.setNome(req.nome().trim());
         c.setTipo(req.tipo());
         c.setLimiteMensal(req.limiteMensal());
-        return paraResposta(c); // não precisa de save(): a entidade já está "gerenciada" na transação
+        return paraResposta(c);
     }
 
     @Transactional
