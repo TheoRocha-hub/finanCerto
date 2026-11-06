@@ -21,5 +21,5 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
-    private String senha; // sempre o hash BCrypt, nunca a senha pura
+    private String senha; 
 }
