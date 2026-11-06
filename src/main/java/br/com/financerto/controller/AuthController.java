@@ -23,7 +23,6 @@ public class AuthController {
         usuarioService.registrar(req);
     }
 
-    /** Quem está logado (a tela usa para mostrar o nome). */
     @GetMapping("/eu")
     public Map<String, String> eu() {
         Usuario u = usuarioService.atual();
