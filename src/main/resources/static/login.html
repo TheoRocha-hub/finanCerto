@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinanCerto — Entrar</title>
+  <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body>
+<main class="login">
+  <h1>FinanCerto</h1>
+  <p id="msg"></p>
+
+  <form id="formLogin" action="/login" method="post" class="coluna">
+    <h2>Entrar</h2>
+    <input name="username" type="email" placeholder="E-mail" required>
+    <input name="password" type="password" placeholder="Senha" required>
+    <button>Entrar</button>
+  </form>
+
+  <form id="formRegistro" class="coluna">
+    <h2>Criar conta</h2>
+    <input id="rNome" placeholder="Nome" maxlength="100" required>
+    <input id="rEmail" type="email" placeholder="E-mail" required>
+    <input id="rSenha" type="password" placeholder="Senha (mínimo 6 caracteres)" minlength="6" required>
+    <button>Cadastrar</button>
+  </form>
+</main>
+
+<script>
+  const $ = id => document.getElementById(id);
+  if (location.search.includes('erro')) $('msg').textContent = 'E-mail ou senha inválidos.';
+
+  $('formRegistro').addEventListener('submit', async e => {
+    e.preventDefault();
+    const r = await fetch('/api/auth/registrar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: $('rNome').value, email: $('rEmail').value, senha: $('rSenha').value })
+    });
+    if (r.ok) { // conta criada: já faz o login automaticamente
+      const f = $('formLogin');
+      f.username.value = $('rEmail').value;
+      f.password.value = $('rSenha').value;
+      f.submit();
+      return;
+    }
+    const erro = await r.json().catch(() => ({}));
+    $('msg').textContent = erro.campos ? Object.values(erro.campos).join(' | ') : (erro.erro || 'Erro ao cadastrar');
+  });
+</script>
+</body>
+</html>

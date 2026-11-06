@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinanCerto</title>
+  <link rel="stylesheet" href="/css/estilo.css">
+</head>
+<body>
+<header>
+  <h1>FinanCerto</h1>
+  <div>
+    <label>Mês <input type="month" id="mes"></label>
+    <span id="usuario"></span>
+    <button id="sair" class="sec">Sair</button>
+  </div>
+</header>
+
+<main>
+  <section id="cards" class="cards"></section>
+
+  <section class="grade">
+    <div class="painel"><h2>Despesas por categoria</h2><canvas id="grafCat"></canvas></div>
+    <div class="painel"><h2>Receitas x despesas (6 meses)</h2><canvas id="grafEvo"></canvas></div>
+  </section>
+
+  <section class="grade">
+    <div class="painel">
+      <h2>Limites por categoria</h2>
+      <div id="orcamentos"></div>
+      <form id="formLimite" class="linha">
+        <select id="catLimite"></select>
+        <input id="limite" type="number" min="0" step="0.01" placeholder="Limite (vazio remove)">
+        <button>Salvar limite</button>
+      </form>
+    </div>
+    <div class="painel">
+      <h2>Nova movimentação</h2>
+      <form id="formMov" class="coluna">
+        <input id="desc" placeholder="Descrição" maxlength="120" required>
+        <input id="valor" type="number" min="0.01" step="0.01" placeholder="Valor (R$)" required>
+        <input id="data" type="date" required>
+        <select id="cat" required></select>
+        <button>Adicionar</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="painel">
+    <h2>Movimentações do mês</h2>
+    <table>
+      <thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Valor</th><th></th></tr></thead>
+      <tbody id="movs"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
