@@ -21,14 +21,14 @@ public class Movimentacao {
     private String descricao;
 
     @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal valor; // sempre positivo; quem diz se entra ou sai é o tipo
+    private BigDecimal valor; 
 
     @Column(nullable = false)
     private LocalDate data;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private TipoMovimentacao tipo; // copiado da categoria
+    private TipoMovimentacao tipo;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria_id")
