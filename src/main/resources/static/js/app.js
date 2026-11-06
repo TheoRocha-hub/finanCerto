@@ -7,7 +7,6 @@ const hoje = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.ge
 
 let categorias = [], graficoCat, graficoEvo;
 
-// Chamada à API: já manda JSON, volta para o login se a sessão expirou e lança erro legível se falhar
 async function api(url, opcoes = {}) {
   const r = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opcoes });
   if (r.status === 401) { location = '/login.html'; throw new Error('Sessão expirada'); }
