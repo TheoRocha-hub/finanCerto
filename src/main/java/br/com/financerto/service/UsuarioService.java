@@ -43,7 +43,6 @@ public class UsuarioService implements UserDetailsService {
         categorias.saveAll(categoriasPadrao(u));
     }
 
-    /** Chamado pelo Spring Security no login: busca o usuário pelo e-mail. */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario u = usuarios.findByEmail(email.trim().toLowerCase())
@@ -51,7 +50,6 @@ public class UsuarioService implements UserDetailsService {
         return User.withUsername(u.getEmail()).password(u.getSenha()).roles("USER").build();
     }
 
-    /** Usuário que fez a requisição atual (vem da sessão de login). */
     @Transactional(readOnly = true)
     public Usuario atual() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
