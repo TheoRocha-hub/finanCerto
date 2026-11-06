@@ -23,7 +23,6 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
 
     boolean existsByCategoriaId(Long categoriaId);
 
-    /** Soma de todas as movimentações de um tipo (null se não houver nenhuma). */
     @Query("select sum(m.valor) from Movimentacao m where m.usuario.id = :uid and m.tipo = :tipo")
     BigDecimal somaPorTipo(Long uid, TipoMovimentacao tipo);
 }
