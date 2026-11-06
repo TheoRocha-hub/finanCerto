@@ -23,7 +23,6 @@ public class Categoria {
     @Column(nullable = false, length = 10)
     private TipoMovimentacao tipo;
 
-    /** Limite de gasto por mês (só faz sentido para despesas). Nulo = sem limite. */
     @Column(precision = 12, scale = 2)
     private BigDecimal limiteMensal;
 
