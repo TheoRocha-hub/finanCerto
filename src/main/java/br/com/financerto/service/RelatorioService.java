@@ -24,10 +24,7 @@ import java.util.stream.Collectors;
 import static br.com.financerto.model.TipoMovimentacao.DESPESA;
 import static br.com.financerto.model.TipoMovimentacao.RECEITA;
 
-/**
- * Os indicadores do sistema. Busca as movimentações do período e calcula em Java:
- * para uso pessoal o volume é pequeno, e o código fica independente do banco (H2 ou PostgreSQL).
- */
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -39,7 +36,6 @@ public class RelatorioService {
     private final CategoriaRepository categorias;
     private final UsuarioService usuarioService;
 
-    /** Cards do topo: saldo, receitas, despesas, taxa de poupança e comparação com o mês anterior. */
     public Resumo resumo(YearMonth mes) {
         Long uid = usuarioService.atual().getId();
         List<Movimentacao> doMes = doMes(uid, mes);
@@ -52,9 +48,7 @@ public class RelatorioService {
                 .subtract(nuloParaZero(movimentacoes.somaPorTipo(uid, DESPESA)));
         BigDecimal saldoDoMes = receitas.subtract(despesas);
 
-        // % da receita que sobrou no mês
         BigDecimal taxaPoupanca = percentual(saldoDoMes, receitas);
-        // quanto as despesas subiram (+) ou caíram (-) em relação ao mês anterior; null se não há base de comparação
         BigDecimal variacao = despesasAnterior.signum() == 0
                 ? null
                 : percentual(despesas.subtract(despesasAnterior), despesasAnterior);
@@ -63,7 +57,6 @@ public class RelatorioService {
         return new Resumo(mes.toString(), saldoGeral, receitas, despesas, saldoDoMes, taxaPoupanca, variacao, maior);
     }
 
-    /** Para onde o dinheiro foi: despesas do mês por categoria, da maior para a menor. */
     public List<GastoCategoria> gastosPorCategoria(YearMonth mes) {
         Map<String, BigDecimal> totais = totaisPorCategoria(doMes(usuarioService.atual().getId(), mes), DESPESA);
         BigDecimal geral = totais.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -72,7 +65,6 @@ public class RelatorioService {
                 .toList();
     }
 
-    /** Receitas x despesas dos últimos N meses (até o mês informado), incluindo meses vazios. */
     public List<EvolucaoMes> evolucao(YearMonth fim, int meses) {
         int n = Math.max(1, Math.min(meses, 24));
         YearMonth inicio = fim.minusMonths(n - 1L);
@@ -91,7 +83,6 @@ public class RelatorioService {
         return resultado;
     }
 
-    /** Categorias que têm limite mensal: quanto já foi gasto e se estourou. */
     public List<Orcamento> orcamentos(YearMonth mes) {
         Long uid = usuarioService.atual().getId();
         Map<String, BigDecimal> gastos = totaisPorCategoria(doMes(uid, mes), DESPESA);
@@ -106,7 +97,6 @@ public class RelatorioService {
                 .toList();
     }
 
-    // ---------- auxiliares ----------
 
     private List<Movimentacao> doMes(Long uid, YearMonth mes) {
         return movimentacoes.listarPeriodo(uid, mes.atDay(1), mes.atEndOfMonth());
@@ -118,7 +108,6 @@ public class RelatorioService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    /** Total por nome de categoria, ordenado do maior para o menor (nome é único por usuário). */
     private Map<String, BigDecimal> totaisPorCategoria(List<Movimentacao> lista, TipoMovimentacao tipo) {
         Map<String, BigDecimal> mapa = lista.stream()
                 .filter(m -> m.getTipo() == tipo)
