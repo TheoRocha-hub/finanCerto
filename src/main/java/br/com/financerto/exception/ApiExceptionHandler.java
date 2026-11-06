@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Transforma exceções em respostas JSON simples: {"erro": "..."}. */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
