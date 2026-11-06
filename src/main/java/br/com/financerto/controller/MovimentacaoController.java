@@ -20,7 +20,6 @@ public class MovimentacaoController {
 
     private final MovimentacaoService service;
 
-    /** GET /api/movimentacoes?mes=2026-10 (sem o parâmetro, usa o mês atual). */
     @GetMapping
     public List<MovimentacaoResponse> listar(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM") YearMonth mes) {
