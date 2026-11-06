@@ -6,11 +6,9 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** Todos os objetos que entram e saem da API (JSON). Records = classes imutáveis só de dados. */
 public final class Dtos {
     private Dtos() {}
 
-    // ---- entrada ----
     public record RegistroRequest(
             @NotBlank @Size(max = 100) String nome,
             @NotBlank @Email @Size(max = 150) String email,
@@ -27,13 +25,11 @@ public final class Dtos {
             @NotNull LocalDate data,
             @NotNull Long categoriaId) {}
 
-    // ---- saída ----
     public record CategoriaResponse(Long id, String nome, TipoMovimentacao tipo, BigDecimal limiteMensal) {}
 
     public record MovimentacaoResponse(Long id, String descricao, BigDecimal valor, LocalDate data,
                                        TipoMovimentacao tipo, Long categoriaId, String categoriaNome) {}
 
-    // ---- relatórios ----
     public record Resumo(String mes, BigDecimal saldoGeral, BigDecimal receitas, BigDecimal despesas,
                          BigDecimal saldoDoMes, BigDecimal taxaPoupanca, BigDecimal variacaoDespesas,
                          String maiorCategoriaDespesa) {}
